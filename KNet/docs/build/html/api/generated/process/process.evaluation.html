@@ -1,0 +1,536 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="process.k_model_training" href="process.k_model_training.html" /><link rel="prev" title="process package" href="../../process.html" />
+
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.08.06 -->
+        <title>process.evaluation - KNet Documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=354aac6f" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=302659d7" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">KNet Documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  
+  <span class="sidebar-brand-text">KNet Documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="../../index.html">API Reference</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><div class="visually-hidden">Toggle navigation of API Reference</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../dataset.html">dataset module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../trainer.html">trainer module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../evaluate.html">evaluate module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../fastmri.html">fastmri module</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../models.html">models package</a><input class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><div class="visually-hidden">Toggle navigation of models package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul>
+<li class="toctree-l3"><a class="reference internal" href="../models/models.modules.html">models.modules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/models.k_model.html">models.k_model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/models.k_image_model.html">models.k_image_model</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../models/models.image_model.html">models.image_model</a></li>
+</ul>
+</li>
+<li class="toctree-l2 current has-children"><a class="reference internal" href="../../process.html">process package</a><input checked="" class="toctree-checkbox" id="toctree-checkbox-3" name="toctree-checkbox-3" role="switch" type="checkbox"/><label for="toctree-checkbox-3"><div class="visually-hidden">Toggle navigation of process package</div><i class="icon"><svg><use href="#svg-arrow-right"></use></svg></i></label><ul class="current">
+<li class="toctree-l3 current current-page"><a class="current reference internal" href="#">process.evaluation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process.k_model_training.html">process.k_model_training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process.k_image_model_training.html">process.k_image_model_training</a></li>
+<li class="toctree-l3"><a class="reference internal" href="process.image_model_training.html">process.image_model_training</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../../_sources/api/generated/process/process.evaluation.rst.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="module-process.evaluation">
+<span id="process-evaluation"></span><h1>process.evaluation<a class="headerlink" href="#module-process.evaluation" title="Permalink to this heading">¶</a></h1>
+<p>evaluation.py</p>
+<p>This file provides evaluation routines for segmentation models
+trained on different input modalities and sampling conditions.</p>
+<p>It includes functions to evaluate:
+- K-space only models (full-sampled and undersampled).
+- Image-domain models using reconstructed images.
+- Hybrid models combining k-space and image features.</p>
+<p class="rubric">Functions</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#process.evaluation.K_full_evaluate" title="process.evaluation.K_full_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">K_full_evaluate</span></code></a>([cfg])</p></td>
+<td><p>Evaluate segmentation performance using full-sampled k-space data.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#process.evaluation.K_image_full_evaluate" title="process.evaluation.K_image_full_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">K_image_full_evaluate</span></code></a>([cfg])</p></td>
+<td><p>Evaluate segmentation performance using both k-space and reconstructed full-sampled image features.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#process.evaluation.K_image_under_evaluate" title="process.evaluation.K_image_under_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">K_image_under_evaluate</span></code></a>([cfg])</p></td>
+<td><p>Evaluate segmentation performance using both k-space and reconstructed undersampled image features.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#process.evaluation.K_under_evaluate" title="process.evaluation.K_under_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">K_under_evaluate</span></code></a>([cfg])</p></td>
+<td><p>Evaluate segmentation performance using undersampled k-space data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#process.evaluation.image_full_evaluate" title="process.evaluation.image_full_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_full_evaluate</span></code></a>([cfg])</p></td>
+<td><p>Evaluate segmentation performance using reconstructed full-sampled images.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#process.evaluation.image_under_evaluate" title="process.evaluation.image_under_evaluate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_under_evaluate</span></code></a>([cfg])</p></td>
+<td><p>Evaluate segmentation performance using reconstructed undersampled images.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Classes</p>
+<div class="table-wrapper autosummary longtable docutils container">
+<table class="autosummary longtable docutils align-default">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#process.evaluation.ModelCfg" title="process.evaluation.ModelCfg"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModelCfg</span></code></a>()</p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<dl class="py function">
+<dt class="sig sig-object py" id="process.evaluation.K_full_evaluate">
+<span class="sig-prename descclassname"><span class="pre">process.evaluation.</span></span><span class="sig-name descname"><span class="pre">K_full_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">namespace(batch=4,</span> <span class="pre">cases_from=1,</span> <span class="pre">cases_to=60,</span> <span class="pre">data_dir=WindowsPath('G:/CMRxRecon2023/pycharm'),</span> <span class="pre">data_root=WindowsPath('G:/CMRxRecon2023/ChallengeData_validation/ChallengeData_validation/SingleCoil/Cine/ValidationSet'),</span> <span class="pre">epochs=50,</span> <span class="pre">frames=(0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6,</span> <span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">9,</span> <span class="pre">10,</span> <span class="pre">11),</span> <span class="pre">gpu=0,</span> <span class="pre">image_full_weight='final_image_full.pt',</span> <span class="pre">image_under_weight='final_image_under.pt',</span> <span class="pre">k_full_weight='final_k_full.pt',</span> <span class="pre">k_image_full_weight='final_k_image_full.pt',</span> <span class="pre">k_image_under_weight='final_k_image_under.pt',</span> <span class="pre">k_temp='temp.pt',</span> <span class="pre">k_under_weight='final_k_under.pt',</span> <span class="pre">lr=0.0004,</span> <span class="pre">n_classes=4,</span> <span class="pre">num_workers=0,</span> <span class="pre">out_dir=WindowsPath('runs/checkpoints'),</span> <span class="pre">target_h=192,</span> <span class="pre">target_w=448)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/process/evaluation.html#K_full_evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.evaluation.K_full_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate segmentation performance using full-sampled k-space data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cfg</strong> (<em>SimpleNamespace</em><em>, </em><em>optional</em>) – Configuration object with attributes such as <cite>gpu</cite>, <cite>batch</cite>,
+<cite>target_h</cite>, <cite>target_w</cite>, and <cite>num_workers</cite>.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Uses CineSegPreparedDataset with fully sampled k-space.</p></li>
+<li><p>Loads a model checkpoint trained on full-sampled k-space.</p></li>
+<li><p>Reports mIoU, CE loss, Dice loss, and per-class metrics.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.evaluation.K_image_full_evaluate">
+<span class="sig-prename descclassname"><span class="pre">process.evaluation.</span></span><span class="sig-name descname"><span class="pre">K_image_full_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">namespace(batch=4,</span> <span class="pre">cases_from=1,</span> <span class="pre">cases_to=60,</span> <span class="pre">data_dir=WindowsPath('G:/CMRxRecon2023/pycharm'),</span> <span class="pre">data_root=WindowsPath('G:/CMRxRecon2023/ChallengeData_validation/ChallengeData_validation/SingleCoil/Cine/ValidationSet'),</span> <span class="pre">epochs=50,</span> <span class="pre">frames=(0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6,</span> <span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">9,</span> <span class="pre">10,</span> <span class="pre">11),</span> <span class="pre">gpu=0,</span> <span class="pre">image_full_weight='final_image_full.pt',</span> <span class="pre">image_under_weight='final_image_under.pt',</span> <span class="pre">k_full_weight='final_k_full.pt',</span> <span class="pre">k_image_full_weight='final_k_image_full.pt',</span> <span class="pre">k_image_under_weight='final_k_image_under.pt',</span> <span class="pre">k_temp='temp.pt',</span> <span class="pre">k_under_weight='final_k_under.pt',</span> <span class="pre">lr=0.0004,</span> <span class="pre">n_classes=4,</span> <span class="pre">num_workers=0,</span> <span class="pre">out_dir=WindowsPath('runs/checkpoints'),</span> <span class="pre">target_h=192,</span> <span class="pre">target_w=448)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/process/evaluation.html#K_image_full_evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.evaluation.K_image_full_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate segmentation performance using both k-space and reconstructed
+full-sampled image features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cfg</strong> (<em>SimpleNamespace</em><em>, </em><em>optional</em>) – Configuration object with <cite>gpu</cite>, <cite>batch</cite>, and dataloader settings.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Uses KImgSegDataset combining k-space and reconstructed full-sampled images.</p></li>
+<li><p>Loads a hybrid model checkpoint (KImgSegModel2).</p></li>
+<li><p>Reports segmentation metrics including per-class scores.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.evaluation.K_image_under_evaluate">
+<span class="sig-prename descclassname"><span class="pre">process.evaluation.</span></span><span class="sig-name descname"><span class="pre">K_image_under_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">namespace(batch=4,</span> <span class="pre">cases_from=1,</span> <span class="pre">cases_to=60,</span> <span class="pre">data_dir=WindowsPath('G:/CMRxRecon2023/pycharm'),</span> <span class="pre">data_root=WindowsPath('G:/CMRxRecon2023/ChallengeData_validation/ChallengeData_validation/SingleCoil/Cine/ValidationSet'),</span> <span class="pre">epochs=50,</span> <span class="pre">frames=(0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6,</span> <span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">9,</span> <span class="pre">10,</span> <span class="pre">11),</span> <span class="pre">gpu=0,</span> <span class="pre">image_full_weight='final_image_full.pt',</span> <span class="pre">image_under_weight='final_image_under.pt',</span> <span class="pre">k_full_weight='final_k_full.pt',</span> <span class="pre">k_image_full_weight='final_k_image_full.pt',</span> <span class="pre">k_image_under_weight='final_k_image_under.pt',</span> <span class="pre">k_temp='temp.pt',</span> <span class="pre">k_under_weight='final_k_under.pt',</span> <span class="pre">lr=0.0004,</span> <span class="pre">n_classes=4,</span> <span class="pre">num_workers=0,</span> <span class="pre">out_dir=WindowsPath('runs/checkpoints'),</span> <span class="pre">target_h=192,</span> <span class="pre">target_w=448)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/process/evaluation.html#K_image_under_evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.evaluation.K_image_under_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate segmentation performance using both k-space and reconstructed
+undersampled image features.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cfg</strong> (<em>SimpleNamespace</em><em>, </em><em>optional</em>) – Configuration object with GPU index, batch size, and sampling settings.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Uses KImgSegDataset combining k-space and reconstructed undersampled images.</p></li>
+<li><p>Loads a hybrid model checkpoint trained with undersampling (R=24, ACS=2).</p></li>
+<li><p>Reports segmentation metrics including per-class results.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.evaluation.K_under_evaluate">
+<span class="sig-prename descclassname"><span class="pre">process.evaluation.</span></span><span class="sig-name descname"><span class="pre">K_under_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">namespace(batch=4,</span> <span class="pre">cases_from=1,</span> <span class="pre">cases_to=60,</span> <span class="pre">data_dir=WindowsPath('G:/CMRxRecon2023/pycharm'),</span> <span class="pre">data_root=WindowsPath('G:/CMRxRecon2023/ChallengeData_validation/ChallengeData_validation/SingleCoil/Cine/ValidationSet'),</span> <span class="pre">epochs=50,</span> <span class="pre">frames=(0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6,</span> <span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">9,</span> <span class="pre">10,</span> <span class="pre">11),</span> <span class="pre">gpu=0,</span> <span class="pre">image_full_weight='final_image_full.pt',</span> <span class="pre">image_under_weight='final_image_under.pt',</span> <span class="pre">k_full_weight='final_k_full.pt',</span> <span class="pre">k_image_full_weight='final_k_image_full.pt',</span> <span class="pre">k_image_under_weight='final_k_image_under.pt',</span> <span class="pre">k_temp='temp.pt',</span> <span class="pre">k_under_weight='final_k_under.pt',</span> <span class="pre">lr=0.0004,</span> <span class="pre">n_classes=4,</span> <span class="pre">num_workers=0,</span> <span class="pre">out_dir=WindowsPath('runs/checkpoints'),</span> <span class="pre">target_h=192,</span> <span class="pre">target_w=448)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/process/evaluation.html#K_under_evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.evaluation.K_under_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate segmentation performance using undersampled k-space data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cfg</strong> (<em>SimpleNamespace</em><em>, </em><em>optional</em>) – Configuration object with attributes such as <cite>gpu</cite>, <cite>batch</cite>,
+<cite>target_h</cite>, <cite>target_w</cite>, <cite>num_workers</cite>, and sampling settings.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Uses CineSegPreparedDataset with undersampling (R=24, ACS=2).</p></li>
+<li><p>Loads a model checkpoint trained on undersampled k-space.</p></li>
+<li><p>Reports segmentation metrics (mIoU, CE loss, Dice loss).</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="process.evaluation.ModelCfg">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">process.evaluation.</span></span><span class="sig-name descname"><span class="pre">ModelCfg</span></span><a class="reference internal" href="../../../_modules/process/evaluation.html#ModelCfg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.evaluation.ModelCfg" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="process.evaluation.ModelCfg.in_ch">
+<span class="sig-name descname"><span class="pre">in_ch</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#process.evaluation.ModelCfg.in_ch" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="process.evaluation.ModelCfg.nf">
+<span class="sig-name descname"><span class="pre">nf</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">64</span></em><a class="headerlink" href="#process.evaluation.ModelCfg.nf" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="process.evaluation.ModelCfg.num_classes">
+<span class="sig-name descname"><span class="pre">num_classes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#process.evaluation.ModelCfg.num_classes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="process.evaluation.ModelCfg.unet_base">
+<span class="sig-name descname"><span class="pre">unet_base</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">24</span></em><a class="headerlink" href="#process.evaluation.ModelCfg.unet_base" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="process.evaluation.ModelCfg.use_in">
+<span class="sig-name descname"><span class="pre">use_in</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.13)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">True</span></em><a class="headerlink" href="#process.evaluation.ModelCfg.use_in" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.evaluation.image_full_evaluate">
+<span class="sig-prename descclassname"><span class="pre">process.evaluation.</span></span><span class="sig-name descname"><span class="pre">image_full_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">namespace(batch=4,</span> <span class="pre">cases_from=1,</span> <span class="pre">cases_to=60,</span> <span class="pre">data_dir=WindowsPath('G:/CMRxRecon2023/pycharm'),</span> <span class="pre">data_root=WindowsPath('G:/CMRxRecon2023/ChallengeData_validation/ChallengeData_validation/SingleCoil/Cine/ValidationSet'),</span> <span class="pre">epochs=50,</span> <span class="pre">frames=(0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6,</span> <span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">9,</span> <span class="pre">10,</span> <span class="pre">11),</span> <span class="pre">gpu=0,</span> <span class="pre">image_full_weight='final_image_full.pt',</span> <span class="pre">image_under_weight='final_image_under.pt',</span> <span class="pre">k_full_weight='final_k_full.pt',</span> <span class="pre">k_image_full_weight='final_k_image_full.pt',</span> <span class="pre">k_image_under_weight='final_k_image_under.pt',</span> <span class="pre">k_temp='temp.pt',</span> <span class="pre">k_under_weight='final_k_under.pt',</span> <span class="pre">lr=0.0004,</span> <span class="pre">n_classes=4,</span> <span class="pre">num_workers=0,</span> <span class="pre">out_dir=WindowsPath('runs/checkpoints'),</span> <span class="pre">target_h=192,</span> <span class="pre">target_w=448)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/process/evaluation.html#image_full_evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.evaluation.image_full_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate segmentation performance using reconstructed full-sampled images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cfg</strong> (<em>SimpleNamespace</em><em>, </em><em>optional</em>) – Configuration object with GPU index and other evaluation parameters.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Uses NpyImageSegDataset with images reconstructed from full k-space.</p></li>
+<li><p>Loads a model checkpoint trained on reconstructed full-sampled images.</p></li>
+<li><p>Computes and prints segmentation metrics with per-class results.</p></li>
+</ul>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="process.evaluation.image_under_evaluate">
+<span class="sig-prename descclassname"><span class="pre">process.evaluation.</span></span><span class="sig-name descname"><span class="pre">image_under_evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cfg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">namespace(batch=4,</span> <span class="pre">cases_from=1,</span> <span class="pre">cases_to=60,</span> <span class="pre">data_dir=WindowsPath('G:/CMRxRecon2023/pycharm'),</span> <span class="pre">data_root=WindowsPath('G:/CMRxRecon2023/ChallengeData_validation/ChallengeData_validation/SingleCoil/Cine/ValidationSet'),</span> <span class="pre">epochs=50,</span> <span class="pre">frames=(0,</span> <span class="pre">1,</span> <span class="pre">2,</span> <span class="pre">3,</span> <span class="pre">4,</span> <span class="pre">5,</span> <span class="pre">6,</span> <span class="pre">7,</span> <span class="pre">8,</span> <span class="pre">9,</span> <span class="pre">10,</span> <span class="pre">11),</span> <span class="pre">gpu=0,</span> <span class="pre">image_full_weight='final_image_full.pt',</span> <span class="pre">image_under_weight='final_image_under.pt',</span> <span class="pre">k_full_weight='final_k_full.pt',</span> <span class="pre">k_image_full_weight='final_k_image_full.pt',</span> <span class="pre">k_image_under_weight='final_k_image_under.pt',</span> <span class="pre">k_temp='temp.pt',</span> <span class="pre">k_under_weight='final_k_under.pt',</span> <span class="pre">lr=0.0004,</span> <span class="pre">n_classes=4,</span> <span class="pre">num_workers=0,</span> <span class="pre">out_dir=WindowsPath('runs/checkpoints'),</span> <span class="pre">target_h=192,</span> <span class="pre">target_w=448)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/process/evaluation.html#image_under_evaluate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#process.evaluation.image_under_evaluate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate segmentation performance using reconstructed undersampled images.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cfg</strong> (<em>SimpleNamespace</em><em>, </em><em>optional</em>) – Configuration object with batch size, GPU index, etc.</p>
+</dd>
+</dl>
+<p class="rubric">Notes</p>
+<ul class="simple">
+<li><p>Uses NpyImageSegDataset with images reconstructed from undersampled k-space.</p></li>
+<li><p>Loads a model checkpoint trained on reconstructed undersampled images.</p></li>
+<li><p>Reports standard segmentation metrics (mIoU, CE loss, Dice loss).</p></li>
+</ul>
+</dd></dl>
+
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="process.k_model_training.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">process.k_model_training</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="../../process.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">process package</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">process.evaluation</a><ul>
+<li><a class="reference internal" href="#process.evaluation.K_full_evaluate"><code class="docutils literal notranslate"><span class="pre">K_full_evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#process.evaluation.K_image_full_evaluate"><code class="docutils literal notranslate"><span class="pre">K_image_full_evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#process.evaluation.K_image_under_evaluate"><code class="docutils literal notranslate"><span class="pre">K_image_under_evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#process.evaluation.K_under_evaluate"><code class="docutils literal notranslate"><span class="pre">K_under_evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#process.evaluation.ModelCfg"><code class="docutils literal notranslate"><span class="pre">ModelCfg</span></code></a><ul>
+<li><a class="reference internal" href="#process.evaluation.ModelCfg.in_ch"><code class="docutils literal notranslate"><span class="pre">ModelCfg.in_ch</span></code></a></li>
+<li><a class="reference internal" href="#process.evaluation.ModelCfg.nf"><code class="docutils literal notranslate"><span class="pre">ModelCfg.nf</span></code></a></li>
+<li><a class="reference internal" href="#process.evaluation.ModelCfg.num_classes"><code class="docutils literal notranslate"><span class="pre">ModelCfg.num_classes</span></code></a></li>
+<li><a class="reference internal" href="#process.evaluation.ModelCfg.unet_base"><code class="docutils literal notranslate"><span class="pre">ModelCfg.unet_base</span></code></a></li>
+<li><a class="reference internal" href="#process.evaluation.ModelCfg.use_in"><code class="docutils literal notranslate"><span class="pre">ModelCfg.use_in</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#process.evaluation.image_full_evaluate"><code class="docutils literal notranslate"><span class="pre">image_full_evaluate()</span></code></a></li>
+<li><a class="reference internal" href="#process.evaluation.image_under_evaluate"><code class="docutils literal notranslate"><span class="pre">image_under_evaluate()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=91e4a3f0"></script>
+    <script src="../../../_static/doctools.js?v=888ff710"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
+    <script src="../../../_static/scripts/furo.js?v=5fa4622c"></script>
+    <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../../../_static/copybutton.js?v=f281be69"></script>
+    </body>
+</html>
