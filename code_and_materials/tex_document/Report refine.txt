@@ -1,0 +1,776 @@
+
+Revised draft version：
+
+All tenses
+All names are uniform.
+The titles of all pictures and tables
+Clear layout
+
+
+Appendix
+
+Abbreviation!
+More results
+Acknowlegement?
+
+
+
+Revised and Refined:
+
+Magnetic Resonance Imaging (MRI) is an important medical imaging technology that has been widely applied in clinical diagnosis for its non-invasiveness, absence of ionizing radiation, and high soft-tissue contrast [1]. The MRI image acquisition process involves two main steps: recording the original signal in the frequency domain space (K-space), and using methods such as Inverse Fourier Transform (IFFT) to reconstruct images from K-space. Each sampling point in K-space encodes spatial frequency and phase information rather than direct image intensities, and these points jointly determines the formation of the final image [2][5]. The traditional MRI analysis process usually relies on reconstructed images as input, and then uses artificial features or deep learning models to perform tasks such as lesion segmentation, classification or detection [3].
+
+The traditional "reconstruct before input" paradigm primarily focuses on spatial domain. However, the original K-space data comprises magnitude information that is equivalent to the image, and also contains phase and other features that may hold potential value [4]. There are different methods to get K-space data. Cartesian scans sample k-space line-by-line and non-Cartesian scans sample continuous curved paths and thus require density compensation and gridding interpolation onto a Cartesian grid before fast Fourier transform [6]. Under ideal conditions, K-space can be transformed through the IFFT to almost losslessly reconstruct the image, but the way information is represented differs between the two domains. Therefore, directly analyzing K-space offers a new perspective for investigating the complementarity of different information domains in medical imaging tasks [7].
+
+
+non-invasive  -->  non-invasiveness
+
+delete: It is difficult for the human to analyze these data directly. 
+
+"reconstruct before analyze" -->  "reconstruct before input"
+
+original K-space data  -->  original K-space
+
+reconstruct：The traditional "reconstruct before input" paradigm primarily focuses on spatial domain. However, the original K-space data comprises magnitude information that is equivalent to the image, and also contains phase and other features that may hold potential value [4].
+
+reconstruct：Each sampling point in K-space encodes spatial frequency and phase information rather than direct image intensities, which jointly determines the formation of the final image [2][5].
+
+a new perspective for exploring  -->  a new perspective for investigating
+
+error fixing : 
+...medical imaging technology that has been widely...
+...image intensities, and these points jointly...
+
+
+
+
+
+- related work (500)
+
+In the field of medical imaging, MRI is widely used in the diagnosis and prognosis assessment of heart diseases since it can provide high-resolution information on the structure and function of the heart \cite{8}. In recent years, deep learning methods have made remarkable progress in multiple aspects in MRI analysis.
+
+In the domain of reconstruction, end-to-end deep networks such as E2E-VarNet use learnable image-domain regularizers and refine K-space via data-consistency steps. Evaluations on large-scale benchmark datasets such as fastMRI illustrate that these methods have improved the accuracy and speed of undersampled MRI reconstruction, providing a viable path for faster image acquisition \cite{9}. Beyond image reconstruction, machine learning has also improved downstream tasks such as lesion segmentation and classification. Using population data from the UK Biobank cine-CMR, Bai et al. developed a Fully Convolutional Network (FCN) for automated cardiac structure segmentation. From the resulting segmentation masks, the researchers calculated ejection fraction, cardiac chamber volume, and other functional indices, thereby establishing a feasible pipeline from segmentation to functional quantification and disease analysis \cite{10}. In classification tasks, deep models of multimodal MRI fusion have been used for tasks such as Alzheimer's disease staging and brain tumour grading \cite{28}. Li et al. developed a Deep Convolutional Neural Network (DCNN) on multi parametric MRI to perform molecular subtyping of gliomas, achieving performance superior to traditional radiomics methods \cite{11}.
+
+In contrast, research of applying deep learning directly to MRI K-space is relatively new. K-space data is primarily used for image reconstruction. Zhu et al. proposed the AUTOMAP framework, which directly maps K-space to images via the deep network, achieving performance comparable to or even superior to traditional reconstruction methods \cite{12}. Oh et al. proposed ETER-net, it uses a bidirectional recurrent neural network to directly map multi-channel K-space data to the image domain and combines CNN to refine the reconstruction results. This network effectively eliminates artifacts and can support multiple sampling trajectories. Compared to AUTOMAP, it has fewer parameters and higher resolution, and further improves detail and structural fidelity by introducing adversarial and perceptual losses \cite{13}. In addition, researchers have begun to explore the direct use of K-space data for diagnosis-related tasks. For example, Ravishankar et al. performed brain structure segmentation and classification directly from K-space using deep neural networks, achieving accuracy comparable to image-domain methods \cite{14}. Bian et al. proposed a dual-path attention fusion network, in which one path processes K-space to extract global frequency-domain features, and the other path processes images to capture local details, with the two fused via an attention mechanism, thereby improving performance in brain tumor segmentation tasks \cite{15}.
+
+These studies indicate that there is complementarity in the expression of information between frequency-domain and image-domain features. K-space may provide additional global information for deep models, while the image presents the local structure more intuitively. Therefore, in-depth investigation into how to effectively extract K-space information and employ it to complement image-based models holds the potential to become one of the key directions in MRI deep learning research.
+
+
+low-sampling  -->  undersampling
+
+providing a viable path for accelerated imaging  -->  providing a viable path for faster image acquisition
+
+delete: large-scale, subsequent, fully, without image reconstruction
+
+CNN  -->  a Fully Convolutional Network (FCN)
+
+Deep Convolutional Neural Network (DCNN)
+
+reconstruct: This network effectively eliminates artifacts and can support multiple sampling trajectories.
+
+segmentation and motion artifact detection  -->  segmentation and classification
+
+where  -->  in which
+
+reconstruct: K-space may provide additional global information for deep models, while the image presents the local structure more intuitively.
+
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+\subsubsection{Research Aims}
+This research work investigates if deep learning models can extract diagnostic features directly from raw MRI signals, bypassing the conventional image reconstruction step. For this purpose, we aim to design and evaluate models capable of analysing complex high-dimensional frequency-domain data and correlate them with pathological findings, thereby enabling a deeper understanding of how K-space can be exploited by deep learning for medical diagnosis.
+
+The specific objectives of this research work can be divided into following points:
+\begin{enumerate}
+\item Investigate if the K-space, which is difficult for humans to understand, can provide meaningful features through machine learning methods. This involves using deep learning models for self-supervised reconstruction, applying K-space-based models directly for end-to-end segmentation tasks, and evaluating the models by examining loss curves and other performance metrics.
+\item Examine if K-space can provide effective complementary features to image-based models. This could be achieved by extracting features from both K-space and images, and verifying whether the architecture can outperform models based on single modality or not.
+\item Explore additional benefits that K-space-based models could bring to current medical imaging pipelines, such as faster data acquisition times and better patient experience.
+\end{enumerate}
+
+\subsubsection{Research Significance}
+This research expands the traditional MRI AI analysis paradigm to the field of raw machine data and local sensors, and provides insights for future artificial intelligence systems that integrate raw signal data into clinical workflows. It validates the feasibility of using deep learning models to extract frequency-domain features, the complementarity of frequency-domain and image-domain features, and the advantages of frequency-domain methods when using undersampled data. These observations contribute to further improving the performance of current pipelines by fusing the image domain with the frequency domain, and have the potential to accelerate the MRI scan and improve the patient experience.
+
+
+whether  -->  if
+
+reconstruct: 
+For this purpose, we aim to design and evaluate models capable of analysing complex high-dimensional frequency-domain data and correlate them with pathological findings, thereby enabling a deeper understanding of how K-space can be exploited by deep learning for medical diagnosis.
+This involves using deep learning models for self-supervised reconstruction, applying K-space-based models directly for end-to-end segmentation tasks, and evaluating the models by examining loss curves and other performance metrics.
+These observations contribute to further improving the performance of current pipelines by fusing the image domain with the frequency domain, and have the potential to accelerate the MRI scan and improve the patient experience.
+
+following points
+
+row  -->  raw
+----------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+\subsection{Data Gathering}
+To evaluate the proposed approach, we employed two publicly available MRI datasets: fastMRI and CMRxRecon2023.
+
+The fastMRI dataset is jointly released by NYU Langone and Facebook AI Research, and it is aims to accelerate MRI reconstruction using AI. This dataset is acquired using 1.5T and 3T MRI scanners, including thousands of de-identified raw K-space acquisitions, with approximately 1,500 knee MRI scans, about 6,970 brain MRI scans, as well as hundreds of prostate and breast MRI data.
+
+CMRxRecon2023 is derived from Medical Image Computing and Computer Assisted Intervention (MICCAI) 2023 "Cardiac MRI Reconstruction Challenge", providing a large-scale, multi-contrast, and multi-view K-space dataset of cardiac MRI. The data cover cine sequences and T1/T2 mapping, which are acquired from 300 healthy volunteers. The data are collected using a 3T Siemens MAGNETOM Vida scanner and 32-channel cardiac coils, including short-axis (SAX) and long-axis (LAX) perspectives, with an automatic calibration line (ACS). Some of the data are accompanied by manual segmentation labels for cardiac cavities and myocardial structures, which was performed by radiologists with over five years of experience in cardiac imaging. These masks and their corresponding images are stored in NIFTI format. Figure 1 shows the K-space, reconstructed image and its segmentation label of a certain frame.
+
+All datasets are stored in MATLAB ".mat" format, containing the number of temporal frames, coil channels, and the original sampling points along the kx and ky directions. In this research work, we used a subset of brain images for image reconstruction to assess if deep learning networks can extract meaningful information from K-space. We also employed the SAX data from the CMRxRecon2023 validation set for the automatic segmentation of cardiac cavities and myocardial structures.
+
+
+delete: tasks, segmentation, 
+
+acquired from 300 healthy volunteers -->  which are acquired from 300 healthy volunteers
+
+add: from K-space.
+
+reconstruction: The fastMRI dataset is jointly released by NYU Langone and Facebook AI Research, and it is aims to accelerate MRI reconstruction using AI. This dataset is acquired using 1.5T and 3T MRI scanners, including thousands of de-identified raw K-space acquisitions, with approximately 1,500 knee MRI scans, about 6,970 brain MRI scans, as well as hundreds of prostate and breast MRI data.
+
+
+
+
+
+\subsection{Data Introduction}
+
+In MRI, K-space data are obtained by applying a series of radio frequency pulses and magnetic field gradients under an external magnetic field and collecting signals in a spatially encoded sequence, and each point encodes a specific spatial frequency component of the image. The complete K-space contains all spatial-frequency information, and combining these frequencies via an inverse Fourier transform (IFT) yields the full image in the spatial domain. This process is usually achieved by applying the two-dimensional Inverse Fast Fourier transform (IFFT) to the data from each coil channel respectively. Figure 2 illustrates how a single data point in K-space affects the entire image. The central regions of K-space represent low spatial frequencies, corresponding to coarse anatomical structures, while the peripheral regions encode high spatial frequencies, capturing fine details and sharp edges. The orientation of the patterns reflects the direction of spatial variation in the image \cite{2}\cite{19}.
+
+The IFT mathematically converts the spatial frequency components in K-space into the spatial domain pixel intensities. Equations 1 and 2 define the Fourier transform (FT) and IFT. In the context of MRI, \( f(t) \) corresponds to the image-domain signal, and \( F(\omega) \) corresponds to the K-space data. The exponential terms describe the decomposition and reconstruction of the signal into and from sinusoidal basis functions, respectively \cite{2}.
+
+
+magnetic resonance imaging  -->  MRI
+
+In MRI, each point encodes  -->  , and each point encodes
+
+delete: dataset, smooth intensity variations and, stored
+
+encode  -->  represent
+
+
+
+\subsubsection{General Preprocessing}
+MR Signals are radiofrequency waves that contain amplitude and phase information, so the raw K-space data are stored in complex form \cite{2}. We converted them into a PyTorch complex tensor and separated the real and imaginary parts into two channels so that the deep learning model can handle it directly. Since the K-space data in the dataset vary in size, we performed center cropping and zero-padding in the frequency domain to unify them to the target resolution. For the fastMRI dataset, the target size was (320, 640); for the CMRxRecon dataset, the target was (192, 448). During cropping or padding, the center of the frequency domain was preserved to avoid affecting the reconstruction of the image.
+
+The CMRxRecon data used in this research work are single-coil, while the fastMRI data are multi-coil, and the number of coils is not unique. We applied singular value decomposition (SVD) based coil compression method to transform the original multi-coil K-space into four virtual coils. This reduced variability in coil configuration while preserving most of the signal energy \cite{20}. Equation 3 shows this calculation process, where \(a_{v,c}\) represents the projection weight from the SVD basis, \(C\) represents the number of original coils, and \(N_v\) represents the number of virtual coils retained (in our experiments, \(N_v=4\)).
+
+
+or  -->  and
+
+resolution  -->  size
+
+affecting the spatial domain image  -->  affecting the reconstruction of the image
+
+delete: data, inter-scan
+
+add: method
+
+eight  -->  four (I changed my method)
+
+study  -->  research work
+
+is  -->  represents 
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+\subsubsection{Undersampling}
+To investigate if deep learning models can extract features from undersampled K-space data, we applied one-dimensional variable density Cartesian undersampling along the phase-encoding direction while keeping the frequency-encoding direction fully sampled. The sampling mask retained a small continuous low-frequency area at the center of the K-space as ACS lines. We employed an acceleration factor of 24, which controlled the ratio between the total number of phase-encoding lines in the fully sampled field and the number of lines preserved. These retained lines were randomly selected according to a variable-density probability distribution outside the ACS region, resulting in denser sampling in the central region and sparser sampling in the peripheral high-frequency region \cite{21}.
+
+Figure 3 illustrates the original K-space, its undersampled counterpart, and the corresponding reconstructed images. It shows that undersampling degrades the structural clarity of the original reconstructed image, posing a challenge for deep learning models to analyse these data.
+
+
+delete: Auto-Calibration Signal, these data
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+\subsubsection{Data Augmentation}
+Since K-space is frequency-domain data, traditional image augmentation methods might destroy its structure and feature. Therefore, we employed specific frequency-domain data augmentation methods in the reconstruction task, including global phase shift, linear phase ramp and horizontal or vertical flip. Table 1 shows the details and purposes of these methods. In this study, data augmentation was only used in the reconstruction experiment.
+
+
+add: Since
+
+
+
+\subsection{Model Architecture}
+In this research work, multiple architectures were implemented and compared. Each point in K-space is relative to the whole reconstructed image, thereby it is difficult to extract effective features using normal CNNs. Therefore, we explored several architectures that are able to capture global information, including complex-CNN, Transformer, and recurrent neural network (RNN). Ultimately, inspired by ETER-net, we designed an architecture that is suitable for K-space input \cite{13}. The overall architectural details are shown in Figure 4.
+
+
+for reconstruction and segmentation tasks, which is suitable  -->  that is suitable
+
+
+
+\noindent \textbf{K-space RNN Encoder}
+The encoder consists of two SweepGRU modules, which are recurrent feature extractors specialized for sequential traversal of 2D K-space data along a certain axis. Different from a single layer Gated Recurrent Unit (GRU), SweepGRU stacks multiple bidirectional GRU layers, and each layer receives the concatenated forward and backward hidden states from the previous layer so as to achieve richer contextual encoding \cite{22}. Residual connections are applied between GRU layers to enhance training stability \cite{23}. After sequentially traversing K-space lines in both orientations, the outputs from the two encoders are fused by a 1x1 convolution to yield a unified representation.
+The encoder is able to capture the global structural relationships in the frequency domain by sequentially traversing K-space in both orientations. It is able to effectively extract features for subsequent image reconstruction and segmentation tasks.
+
+
+The SweepGRU module  -->  which
+
+Each layer  -->  and each layer
+
+
+
+\noindent \textbf{Coarse Segmentation Head}
+The encoded K-space features are input to a lightweight coarse segmentation head, which is composed of two convolutional layers. The CoarseHead converts frequency-domain features to a rough spatial domain mask, so that the U-Net refiner can focus on boundary refinement and detail enhancement rather than learning from scratch. In addition, this structure can serve as a bridge between the frequency domain and the spatial domain, making the features learned by K-space RNN encoder easier to be used by subsequent spatial domain modules.
+
+\noindent \textbf{Reconstruction Head}
+The reconstruction head aims to predict the magnitude image using the features provided by the K-space RNN encoder. The lightweight module consists of two convolutional layers: a 3×3 convolution with ReLU activation to reduce the channel dimension followed by another 3×3 convolution to produce a single-channel output. 
+This module is to verify if the encoder can extract meaningful information and regularize the network and encourage it to preserve spatially coherent information. In the segmentation task, the encoder tends to learn features directly related to segmentation. Without auxiliary constraints, the model might overlook the information related to the original signal structure, thereby increasing the risk of overfitting. The reconstruction head will force the model to retain more complete frequency-domain information, making the features more general and stable.
+
+
+rather than learning the entire segmentation from scratch  -->  rather than learning from scratch
+
+architecture  -->  network
+
+task  -->  head
+
+delete: thereby
+
+
+
+
+
+\noindent \textbf{U-Net Refiner}
+We introduced a standard U-Net architecture after the coarse segmentation head to complete the refined segmentation. The U-Net refiner takes the coarse segmentation result as input and outputs the final result. It is composed of multiple convolutional and max-pooling blocks, which gradually extract high-level semantic features. Following the encoder, a convolutional block with a higher number of channels is employed in the bottleneck layer for global context integration and feature compression. The decoder is composed of several upsampling modules, and each of them includes bilinear interpolation upsampling and convolutional blocks. Skip connections transfer features directly from upsampling modules to corresponding downsampling modules to mitigate feature degradation and retain details of the low-level features. After the standard U-Net architecture, the feature map is mapped to the category dimension through a 1×1 convolution.
+
+\subsubsection{Fusing K-space and Reconstructed Images as Inputs}
+We further compared two alternative input configurations: only using the image reconstructed by IFFT, and using the combination of IFFT reconstructed image and K-space. The network structure was also adjusted accordingly. For the case of using only the image as input, the reconstructed image was directly fed into the U-Net refiner. For the case of combining image and K-space as input, the IFFT-reconstructed image was concatenated with the output of the coarse segmentation head before being fed into the U-Net refiner. In both cases, we removed the reconstruction head and focused only on the final segmentation results. Figure 5 illustrates the updated network structure that uses the combined input.
+
+
+introduce  -->  introduced
+
+refined segmentation pipeline  -->  refined segmentation.
+
+The encoder  -->  It
+
+-->  and each of them
+
+, mitigating degradation and retaining -->  to mitigate degradation and retain
+
+image reconstructed by IFFT alone with K-space  -->  the combination of IFFT-reconstructed image and K-space
+
+
+
+\subsection{Training Strategy}
+For the reconstruction experiment, the model adopts Mean Absolute Error (MAE) as the loss function, to encourage sparsity in the residual error. MAE loss is less sensitive to outliers, so it is particularly benefit for preserving structural details \cite{24}.
+
+In the segmentation task, the network is trained under the multi-task learning paradigm, and the overall loss function consists of three parts. The first part is the same as the loss function used in the reconstruction task, derived from the reconstruction head. The other two components are cross-entropy loss and Dice loss. Cross-entropy measures the difference between the output and the label The Dice loss measures the degree of overlap between the predicted results and the label, focusing on the ratio of correctly segmented pixels instead of its absolute number. It is effective in handling class imbalance situations, and is able to improve the segmentation performance for minority classes \cite{25}. The final loss is shown in Formula 3. Since the reconstruction loss is relatively small compared to other loss terms, we applied a scaling factor of 3 to balance its contribution during the training process.
+
+
+which is  -->  so it is
+
+10  -->  3  (I changed the mothod)
+
+
+
+\section{Results and Disscussions}
+\subsection{Results}
+We first assessed if the coarse segmentation head can provide a gradually refined result to vindicate that the feature extractor is able to extract meaningful features of K-space to a certain degree. Subsequently, we evaluated the segmentation performance using fully sampled K-space and compared the results across different input types. To further investigate model's capability to provide effective predictions from undersampled K-space, we conducted an additional set of experiments and compared their performance.
+In the reconstruction task, the objective of this research work is not to obtain the reconstructed image, as it can be obtained directly through IFFT, but to preliminarily determine if the K-space RNN encoder could provide enough information for the subsequent network. Therefore, the network employs a simple reconstruction head to ensure the efficiency of the overall network. This design enables rapid verification of the experimental feasibility and is able to provide the reconstruction loss in the segmentation task without significantly compromising the model's efficiency.
+Figure 6 illustrates that the MAE reconstruction loss decreases steadily during training, which indicates that the K-space encoder can learn globally consistent features even with a lightweight reconstruction head.
+
+
+This research work -->  We
+
+whether  -->  if
+
+different types of model inputs  -->  different input types
+
+reconstruction:  To further investigate model's capability to provide effective predictions from undersampled K-space
+
+its  -->  their
+
+This result  -->  which
+
+（The figure is also changed）
+
+
+
+
+
+\subsubsection{Segmentation Results with Fully Sampled K-space}
+A variety of metrics were used to evaluate the segmentation performance of the model, including pixel accuracy, cross-entropy, mean intersection over union (mIoU), and mean Dice. Pixel accuracy measures the proportion of correctly classified pixels; mIoU and mean Dice measures the overlap between the prediction and the label. The mIoU calculates the intersection over union of each category separately before taking the average, while mean Dice gives higher weights to the overlapping areas, so it is more sensitive to small targets [26]. These metrics cover two major aspects including classification accuracy and region overlap. However, for medical image segmentation, clinically relevant metrics are also of great importance. Therefore, we introduced the Average Surface Distance (ASD), which evaluates the average distance between the predicted and ground truth contours, to obtain stronger clinical readability [27].
+
+Table 2 and Table 3 present the model’s results on the validation set and the corresponding confusion matrix, respectively. The proposed framework achieved a pixel accuracy of 0.982, indicating that most pixels are correctly classified. In terms of overlap-based metrics, the model obtained a mean Dice score of 0.567 and an mIoU of 0.505, reflecting that the prediction results have a certain degree of region-level consistency with the ground truth. To further evaluate boundary accuracy, we calculated the ASD, and the ASD of all categories reached 4.325 pixels. These results indicate that the proposed framework has the capability to capture effective features of K-space and is able to complete the segmentation task with reasonable accuracy. However, there is still much room for improvement in fine-grained boundary depiction and differentiation of certain anatomical structures.
+
+
+pixels that are correctly classified  -->  correctly classified pixels
+
+and then takes  -->  before taking
+
+data updated!
+
+capacity  -->  capability
+
+a certain degree of accuracy  -->  reasonable accuracy
+
+
+
+
+\noindent \textbf{Comparison with Image and Hybrid Inputs}
+In order to compare the effectiveness of our proposed method with the conventional image-based approach, we evaluated the model that takes K-space inputs against a model that takes IFFT-reconstructed image input. Subsequently, we fused the information extracted by the Kspace RNN encoder with the reconstructed image and fed them together into the U-Net refiner. Figure 5 illustrates the prediction results of the three models in several cases, and Table 4 provides a detailed quantitative comparison of their performance. 
+
+Compared to the K-space model, the image model achieved significantly higher scores. The information extracted from K-space alone is still insufficient for fine-grained segmentation, although it can capture semantically meaningful and spatially coherent features. It is worth noting that the network using hybrid input outperformed either single-input model across most evaluation metrics with the best overall performance. This demonstrates that the frequency-domain data can provide complementary information for the features of the image domain, which is conducive to further improve the segmentation performance. Case B and C in Figure 7 clearly show the positive effect of the information extracted by our network on the image model.
+
+
+data updated!
+
+while  -->  and
+
+all evaluation metrics  -->  most evaluation metrics
+
+improving  -->  improve
+
+
+
+\subsubsection{Segmentation Results with Undersampled K-space}
+In practical medical imaging pipelines, undersampling of K-space is often employed to accelerate scanning. Inevitably, it will lead to information loss, thereby affect the reconstruction quality. To examine the performance of the proposed architecture under this practical constraint, we evaluated it on K-space data with different acceleration ratios. At lower undersampling rates, the image model still outperformed the K-space model. However, under aggressive undersampling, the structural integrity of the IFFT-reconstructed images was severely obliterated, making it difficult for the image model to perform effectively. Figure 8 and Table 5 present the model performance on aggressively undersampled data with an acceleration factor of 24.
+
+The accuracy of all models decreased compared to the fully sampled counterparts. In contrast, the performance degradation of the proposed network is relatively small, which indicates that it still retains usable segmentation capability. As also illustrated in Figure 8, the proposed model is better at predicting the relative positions of the cardiac cavities and myocardium, while the image-based model is more susceptible to errors introduced in the reconstructed image. The network using hybrid input continued to outperform either single-input model, consistent with the synergistic effect between frequency-domain and spatial-domain features observed in the fully sampled scenario.
+
+
+data updated!
+
+affecting  -->  affect
+
+quality of reconstruction  -->  reconstruction quality
+
+
+
+
+\subsection{Discussions}
+This research work explores the feasibility of employing deep learning to extract effective features directly in the frequency domain (K-space) and use them for downstream tasks. We focused on designing a framework with global perception to align with the physical properties of the frequency domain. Drew inspiration from the ETER-net, we introduced several structural adjustments to design an end-to-end framework capable of segmenting directly from K-space. The proposed architecture utilises an RNN to sequentially scan the K-space, which achieved a mean Dice score of 0.567 and an mIoU of 0.505 on fully sampled data. These results demonstrate the frequency-domain features not only contain semantic information but also have sufficient spatial consistency to support downstream segmentation tasks.
+
+Following the above experiments, we compared the proposed network with the traditional pipeline, in which MRI data are first converted into images via IFFT and then fed into image-based machine learning models. The image-based network significantly outperformed our network, with a mean Dice score of 0.807 and an mIoU of 0.764. This indicates that the information in the frequency domain is still difficult to be extracted and utilized by the deep learning framework, especially in scenarios requiring fine-grained segmentation, albeit we have verified its feasibility. However, by fusing the image-domain features and frequency-domain features as input, the network reached the best performance, suggesting that frequency-domain features are able to provide complementary information and thereby improve the overall performance. Such complementarity may stem from the fact that while IFFT is theoretically reversible, certain information such as phase information may be lost in practice.
+
+In addition, we further investigated the performance of the proposed model on aggressively undersampled K-space. In contrast to the fully sampled results, the model based on frequency-domain features outperformed the image-based model with a significantly smaller performance degradation. Severe undersampling leads to irreversible detail loss in the IFFT reconstruction, destroying the spatial details that the image-domain method relies on, but the mothod using K-space directly avoids this process. Benefiting from this property, our proposed architecture demonstrated greater robustness in the situations where K-space is severely undersampled, highlighting the potential for enabling accelerated MRI acquisition. Moreover, fusing image-domain and frequency-domain inputs yielded the highest performance, further confirming the synergistic effect between the two modalities.
+
+
+data updated!
+
+focus  -->  focused     introduce  -->  introduced
+
+We draw  -->  Drew
+
+delete: to complete the downstream task
+
+extract and utilize  -->  be extracted and utilized
+
+while directly using K-space avoids this process  -->  but the mothod using K-space directly avoids this process
+
+
+
+
+\section{Limitations, Future Work and Conclusion}
+\subsection{Limitations}
+This research still has several limitations that need to be addressed. First of all, the quantity and diversity of the data are limited. We only tested the proposed segmentation framework using single-coil K-space data and did not explicitly utilize the sensitivity and data consistency priors of the multi-coil data. In addition, due to the constraints of the dataset labels, our experiments were restricted to cardiac MRI and were limited to segmenting normal anatomical structures rather than pathological lesions. Therefore, the current conclusions mainly reflect the feasibility under specific organ and healthy samples, and further experiments are still expected to generalize our findings. In the tests using undersampled data, we only used Cartesian sampling, ignoring other sampling schemes, such as non-Cartesian and spatiotemporal undersampling. These sampling schemes are generally more complex but can better preserve features, and are worth exploring. Moreover, when testing the fusion of K-space and image inputs, although the model outperformed either single-modality model in most metrics, the improvement was still limited, suggesting that the fusion strategy can be further improved.
+
+
+delete: in the future
+
+required  -->  expected
+
+all  -->  most
+
+
+
+
+\subsection{Future Work}
+Based on the limitations of the current study, we further discuss potential directions for future improvements. First, it is vital to assess the generalizability of the proposed method across more diverse datasets and tasks. This includes seeking annotated datasets covering multiple anatomies such as the heart, brain, knee, and breast. At the same time, focusing on different application scenarios such as health assessment, disease classification, and disease development prediction to make the framework more relevant and applicable to real clinical workflows. Notably, we have shown that K-space–based models are more difficult to capture fine local details than image-based models; however, for certain tasks that emphasize global context such as some disease classification problems, these models may offer advantages. Secondly, we plan to further design network architectures that can more effectively extract frequency-domain information, such as physics-informed neural networks and graph neural networks. These networks are expected to better utilize the physical properties of the frequency domain, further enhance performance and provide more interpretability. 
+
+Furthermore, we also hope that future research can pay more attention to the use of aggressively undersampled data. Previously, in terms of the extremely undersampled data, the images obtained after IFFT could hardly retain meaningful information and were thus ignored. However, our research has demonstrated that the original frequency-domain data can be directly exploited by deep neural networks and produce usable results, even if we did not design the framework for this type of data specifically. Future research has sufficient reason to make such attempts, which may significantly shorten MRI acquisition times and improve patient experience. In summary, we anticipate the emergence of more high-quality K-space datasets and call on more researchers to further study this field to explore new possibilities for breakthroughs in AI-assisted radiology.
+
+
+find it more challenging  -->  are more difficult to capture fine local details than image-based models
+
+utilizing  -->  the use of
+
+because of  -->  in terms of
+
+develop  -->  design
+
+
+
+
+
+\subsection{Conclusion}
+This research work systematically investigates deep learning’s ability to directly extract information from K-space and verifies the feasibility of bypassing reconstruction to work directly in K-space. We employed a framework consisting of a K-space RNN Encoder, a coarse segmentation head, and a U-Net refiner to conduct the end-to-end segmentation task, with a reconstruction head to provide auxiliary constraints. The proposed model achieves usable myocardial segmentation, with a mean Dice score of 0.567 and an mIoU of 0.505 on fully sampled data, although our method still shows a considerable performance gap compared with traditional image-based workflows. However, the model fed with both IFFT-reconstructed images and raw K-space features achieves the best performance, which, to some extent demonstrates the synergy between the frequency and spatial domains and offers a new approach for improving medical image analysis models. Furthermore, we explored the performance of the proposed framework on undersampled data. In this case, our framework outperforms image-based methods, as it uses the raw K-space directly and avoids relying on the severely damaged reconstructed image. Meanwhile, the results show that the synergistic effect between the two modalities’ features persists in this scenario. This observations might help to shorten MRI scan time significantly by motivating a re-examination of severely undersampled K-space data instead of dismissing it simply because reconstructing meaningful images is difficult. Finally, we call for the creation of more high-quality K-space datasets and further research in this field.
+
+
+verifying  -->  and verifies
+
+and working  -->  to work
+
+model  -->  method that fuses
+
+reconstruction: 
+In this case, our framework outperforms image-based methods, as it uses the raw K-space directly and avoids relying on the severely damaged reconstructed image.
+Meanwhile, the results show that the synergistic effect between the two modalities’ features persists in this scenario.
+However, the model fed with both IFFT-reconstructed images and raw K-space features achieves the best performance...
+
+observations
+
+delete: for
+
+
+
+
+\section*{Abstract}
+AI assisted Magnetic Resonance Imaging (MRI) pipelines typically reconstruct images before analysis. However, this study investigates whether deep learning networks can bypass reconstruction and learn diagnostic features directly from raw K-space for downstream tasks. We propose a dual-axis SweepGRU encoder that scans K-space rows and columns to capture long-range dependencies, and a U-Net refiner for segmenting cardiac structures, together with auxiliary reconstruction and coarse-segmentation heads. We evaluate the effect of myocardial/cavity segmentation under full sampling and undersampling on CMRxRecon2023 cardiac MRI data. The proposed model obtains a mean Dice of 0.567 and an mIoU of 0.505 on fully sampled data, indicating that frequency-domain representations contain semantically meaningful and spatially coherent information that can be extracted by deep learning network. Moreover, when supplied with a joint input of reconstructed images and K-space features, the model achieves better performance than with either modality alone, indicating the synergistic effect between the frequency and spatial domains. We further observe that under severe undersampling, the model with K-space input degrades significantly less than that with image input and performs better, offering a pathway to obtaining valuable information with shorter MRI scan time. These findings provide preliminary evidence that K-space can be used directly for downstream tasks and strengthen existing workflows. They also have the potential to accelerate MRI acquisition and to offer a methodological reference for sensor-level AI.
+
+
+add: However   learning
+
+obtains
+
+model using a joint  -->  when supplied with a joint input
+
+synergy  -->  the synergistic effect
+
+having  -->  have
+
+the model achieves best performance than with either modality alone
+
+They also have the potential to accelerate MRI acquisition and to offer a methodological reference for sensor-level AI.
+
+the model with K-space input degrades significantly less than that with image input
+
+
+
+List of Abbreviation
+
+
+Magnetic Resonance Imaging  --  MRI
+
+Inverse Fourier Transform  --  IFT
+
+Fully Convolutional Network  --  FCN
+
+Deep Convolutional Neural Network  --  DCNN
+
+Short-Axis  --  SAX
+
+Long-Axis  --  LAX
+
+Autocalibration Signal  --  ACS
+
+Inverse Fast Fourier transform  --  IFFT
+
+Singular Value Decomposition  --  SVD
+
+Recurrent Neural Network  --  RNN
+
+Gated Recurrent Unit  --  GRU
+
+Mean Absolute Error  --  MAE
+
+mean intersection over union  --  mIoU
+
+Average Surface Distance  --  ASD
+
+
+
+
+
+Feedback from Yassine:
+
+
+Structural Changes:
+
+(OK)
+First, section 3 typo :should be "Discussions" violates standard academic structure by combining results and discussion. These need to be separated completely. Results should purely present what you found without interpretation, while Discussion should analyse and interpret those findings.
+
+(FREE)
+Your introduction structure works well, but the Related Work section (1.2) feels disconnected from your specific problem. While the K-space reconstruction literature is relevant, focus more tightly on direct K-space analysis for downstream tasks rather than general MRI deep learning progress.
+
+(OK)
+The methodology section is extremely crowded, consider leading with a high-level system overview before diving into technical details. The "Framework Details" subsection especially needs clearer organization.
+
+
+Content Issues:
+
+(OK)
+You're missing a clear, testable hypothesis. What specific claim are you testing beyond "K-space contains useful information"? Something like "RNN encoders can extract diagnostically relevant features directly from K-space that complement image-domain analysis" would anchor the work better.
+
+(OK)
+Your experimental design needs more rigor details: How did you ensure no data leakage between train/validation/test? What statistical tests validate your performance claims? The 0.549 Dice vs 0.675 for images - is this ?
+
+(FREE)
+Several methodological gaps need addressing: Why specifically choose GRU over other sequence models? How did you determine the optimal architecture parameters? The "sanity check" reconstruction experiment needs better motivation.
+
+(OK)
+Your multi-task learning approach (reconstruction + segmentation heads) is smart but under-explained. How do you balance the loss weights? Why factor of 10 for reconstruction loss?
+
+(OK)
+The under sampling results are your strongest contribution - this deserves more prominence. The fact that K-space models degrade less under severe under-sampling is clinically significant.
+
+(OK)
+Your fusion strategy (K-space + image) is interesting but how exactly do you combine these features? Just concatenation seems simplistic.
+
+
+Writing Quality:
+
+(OK)
+Too much unexplained jargon. Terms like "SVD-based coil compression," "variable-density Cartesian undersampling," and "Auto-Calibration Signal lines" need brief explanations when introduced.
+
+(OK)
+Some unnecessarily complex sentences: "Each sampling point in K-space contains global spatial frequency information, which jointly determine the formation of the final image" could be "Each K-space point encodes spatial frequency information that collectively determines the final image structure."
+
+(OK)
+The clinical motivation could be stronger - why does this matter for actual patient care beyond just technical novelty?
+
+
+
+
+
+
+
+
+
+
+
+
+
+\section{Results}
+
+++ We evaluated the proposed network in three scenarios and compared its performance under different input schemes.
+
+-- We first assessed if the coarse segmentation head can provide a gradually refined result to vindicate that the feature extractor is able to extract meaningful features of K-space to a certain degree. Subsequently, we evaluated the segmentation performance using fully sampled K-space and compared the results across different input types. To further investigate model's capability to provide effective predictions from undersampled K-space, we conducted an additional set of experiments and compared their performance.
+
+\subsection{Results of Sanity Check: Simple Reconstruction from K-space}
+
+-- In the reconstruction task, the objective of this research work is not to obtain the reconstructed image, as it can be obtained directly through IFFT, but to preliminarily determine if the K-space RNN encoder could provide enough information for the subsequent network. Therefore, the network employs a simple reconstruction head to ensure the efficiency of the overall network. This design enables rapid verification of the experimental feasibility and is able to provide the reconstruction loss in the segmentation task without significantly compromising the model's efficiency.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\linewidth]{report_image/curve_recon.png}
+    \captionsetup{width=.9\linewidth}
+    \caption{Reconstruction MAE during training}
+\end{figure}
+
+
+++ In the reconstruction task, MAE is evaluated to check the feasibility of this architecture. Figure 6 shows the MAE reconstruction loss of every training epochs.
+
+-- Figure 6 illustrates that the MAE reconstruction loss decreases steadily during training, which indicates that the K-space encoder can learn globally consistent features even with a lightweight reconstruction head.
+
+
+\subsection{Segmentation Results with Fully Sampled K-space}
+A variety of metrics were used to evaluate the segmentation performance of the model, including pixel accuracy, cross-entropy, mIoU, and mean Dice. Pixel accuracy measures the proportion of correctly classified pixels; mIoU and mean Dice measures the overlap between the prediction and the label. The mIoU calculates the intersection over union of each category separately before taking the average, while mean Dice gives higher weights to the overlapping areas, so it is more sensitive to small targets \cite{26}. These metrics cover two major aspects including classification accuracy and region overlap. However, for medical image segmentation, clinically relevant metrics are also of great importance. Therefore, we introduced the Average Surface Distance (ASD), which evaluates the average distance between the predicted and ground truth contours, to obtain stronger clinical readability \cite{27}.
+
+\vspace{1em}
+\begin{table*}[h]
+\centering
+\begin{minipage}{0.48\textwidth}
+    \centering
+    \caption{Results of the proposed model on validation set}
+    \label{tab:val_results}
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabularx}{\linewidth}{@{} l >{\raggedleft\arraybackslash}X @{}}
+        \toprule
+        \textbf{Metric} & \textbf{Value} \\
+        \midrule
+        Pixel Accuracy & 0.9819 \\
+        Cross Entropy & 0.072 \\
+        Mean Dice    & 0.5674 \\
+        Mean IoU    & 0.505 \\
+        Overall ASD & 4.325 \\
+        \bottomrule
+    \end{tabularx}
+\end{minipage}\hfill
+\begin{minipage}{0.45\textwidth}
+    \centering
+    \captionsetup{width=.9\linewidth}
+    \caption{Pixel-based confusion matrix on the validation set}
+    \label{tab:cm_val}
+    \renewcommand{\arraystretch}{1.15}
+    \scriptsize
+    \setlength{\tabcolsep}{4pt}
+    \resizebox{\linewidth}{!}{%
+    \begin{tabular}{@{} r r r r r @{}}
+    \toprule
+    \textbf{} & \textbf{0} & \textbf{1} & \textbf{2} & \textbf{3} \\
+    \midrule
+    0 & 10095681 & 19456 & 34843 & 31240 \\
+    1 & 7451     & 46502 & 16784 & 636  \\
+    2 & 20693    & 10092 & 28366 & 5086  \\
+    3 & 35977    & 573   & 5588  & 48968 \\
+    \bottomrule
+    \end{tabular}}
+
+\end{minipage}
+\end{table*}
+
+\vspace{0.5em}
+
+
+Table 2 and Table 3 present the model’s results on the validation set and the corresponding confusion matrix, respectively. 
+
+-- The proposed framework achieved a pixel accuracy of 0.982, indicating that most pixels are correctly classified. In terms of overlap-based metrics, the model obtained a mean Dice score of 0.567 and an mIoU of 0.505, reflecting that the prediction results have a certain degree of region-level consistency with the ground truth. To further evaluate boundary accuracy, we calculated the ASD, and the ASD of all categories reached 4.325 pixels. These results indicate that the proposed framework has the capability to capture effective features of K-space and is able to complete the segmentation task with reasonable accuracy. However, there is still much room for improvement in fine-grained boundary depiction and differentiation of certain anatomical structures.
+
+\vspace{1em}
+
+
+\noindent \textbf{Comparison with Image and Hybrid Inputs}
+
+In order to compare the effectiveness of our proposed method with the conventional image-based approach, we evaluated the model that takes K-space inputs against a model that takes IFFT-reconstructed image input. Subsequently, we fused the information extracted by the K-space RNN encoder with the reconstructed image and fed them together into the U-Net refiner. Figure 5 illustrates the prediction results of the three models in several cases, and Table 4 provides a detailed quantitative comparison of their performance. 
+
+
+\vspace{1em}
+\begin{table}[h]
+\centering
+\caption{Segmentation performance comparison on fully sampled data.}
+\label{tab:tab4}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular*}{0.95\linewidth}{@{\extracolsep{\fill}} lccccc}
+\toprule
+Model & Pixel Acc & Mean Dice & mIoU & ASD \\
+\midrule
+K-space only      & 0.9819 & 0.5674 & 0.505 & 4.325 \\
+image only  & 0.994 & \textbf{0.8074} & 0.7639 & 1.427 \\
+K-space + image   & \textbf{0.9943} & 0.8012 & \textbf{0.7736} & \textbf{1.2212} \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\vspace{1em}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{report_image/full_compare.png}
+    \captionsetup{width=.9\linewidth}
+    \caption{Comparison of cardiac MRI segmentation on fully sampled data. (a) zero-filled IFFT; (b) ground truth; (c) K-space input; (d) image input; (e) hybrid input.}
+\end{figure}
+\vspace{0.5em}
+
+
+-- Compared to the K-space model, the image model achieved significantly higher scores. The information extracted from K-space alone is still insufficient for fine-grained segmentation, although it can capture semantically meaningful and spatially coherent features. It is worth noting that the network using hybrid input outperformed either single-input model across most evaluation metrics with the best overall performance. This demonstrates that the frequency-domain data can provide complementary information for the features of the image domain, which is conducive to further improve the segmentation performance. Case B and C in Figure 7 clearly show the positive effect of the information extracted by our network on the image model.
+
+
+\subsection{Segmentation Results with Undersampled K-space}
+-- In practical medical imaging pipelines, undersampling of K-space is often employed to accelerate scanning. Inevitably, it will lead to information loss, thereby affect the reconstruction quality. （To examine the performance of the proposed architecture under this practical constraint, we evaluated it on K-space data with different acceleration ratios.） At lower undersampling rates, the image model still outperformed the K-space model. However, under aggressive undersampling, the structural integrity of the IFFT-reconstructed images was severely obliterated, making it difficult for the image model to perform effectively. 
+
+++ We also trained and evaluated the network with severely undersampled K-space data to examine its performance under accelerated MRI acquisition.
+
+Figure 8 and Table 5 present the model performance on aggressively undersampled data with an acceleration factor of 24.
+
+\vspace{1em}
+
+\begin{table}[h]
+\centering
+\caption{Segmentation performance comparison on undersampled data.}
+\label{tab:tab4}
+\setlength{\tabcolsep}{6pt}
+\begin{tabular*}{0.95\linewidth}{@{\extracolsep{\fill}} lccccc}
+\toprule
+Model & Pixel Acc &  Mean Dice & mIoU & ASD \\
+\midrule
+K-space only      & 0.975  & 0.5077 & 0.4412 & 5.677 \\
+image only        & 0.975  & 0.4789 & 0.4238 & 7.017 \\
+K-space + image   & \textbf{0.9784} & \textbf{0.5401} & \textbf{0.4794} & \textbf{5.1071} \\
+\bottomrule
+\end{tabular*}
+\end{table}
+
+\vspace{0.5em}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1.0\linewidth]{report_image/under_compare.png}
+    \captionsetup{width=.9\linewidth}
+    \caption{Comparison of cardiac MRI segmentation on undersampled data. (a) zero-filled IFFT; (b) ground truth; (c) K-space input; (d) image input; (e) hybrid input.}
+\end{figure}
+
+-- The accuracy of all models decreased compared to the fully sampled counterparts. In contrast, the performance degradation of the proposed network is relatively small, which indicates that it still retains usable segmentation capability. As also illustrated in Figure 8, the proposed model is better at predicting the relative positions of the cardiac cavities and myocardium, while the image-based model is more susceptible to errors introduced in the reconstructed image. The network using hybrid input continued to outperform either single-input model, consistent with the synergistic effect between frequency-domain and spatial-domain features observed in the fully sampled scenario.
+
+
+
+
+
+
+\section{Discussion}
+
+This research work explores the feasibility of employing deep learning to extract effective features directly in the frequency domain (K-space) and use them for downstream tasks. We focused on designing a framework with global perception to align with the physical properties of the frequency domain. Drew inspiration from the ETER-net, we introduced several structural adjustments to design an end-to-end framework capable of segmenting directly from K-space, which utilises an RNN to sequentially scan the K-space.
+
+We first assessed if the coarse segmentation head can provide a gradually refined result to vindicate that the feature extractor is able to extract meaningful features of K-space to a certain degree. Subsequently, we evaluated the segmentation performance using fully sampled K-space and compared the results across different input types. To further investigate model's capability to provide effective predictions from undersampled K-space, we conducted an additional set of experiments and compared their performance.
+
+
+
+
+\subsection{Sanity Check: Simple Reconstruction from K-space}
+
+In the reconstruction task, the objective of this research work is not to obtain the reconstructed image, as it can be obtained directly through IFFT, but to preliminarily determine if the K-space RNN encoder could provide enough information for the subsequent network. Therefore, the network employs a simple reconstruction head to ensure the efficiency of the overall network. This design enables rapid verification of the experimental feasibility and is able to provide the reconstruction loss in the segmentation task without significantly compromising the model's efficiency.
+
+Figure 6 illustrates that the MAE reconstruction loss decreases steadily during training, which indicates that the K-space encoder can learn globally consistent features even with a lightweight reconstruction head.
+
+
+
+
+\subsection{Fully Sampled K-space: Interpretation and Comparison}
+
+As shown in Table 2 and Table 3, the proposed framework achieved a pixel accuracy of 0.982, indicating that most pixels are correctly classified. In terms of overlap-based metrics, the model obtained a mean Dice score of 0.567 and an mIoU of 0.505, reflecting that the prediction results have a certain degree of region-level consistency with the ground truth. To further evaluate boundary accuracy, we calculated the ASD, and the ASD of all categories reached 4.325 pixels. These results indicate that the proposed framework has the capability to capture effective features of K-space and is able to complete the segmentation task with reasonable accuracy. However, there is still much room for improvement in fine-grained boundary depiction and differentiation of certain anatomical structures.
+
+Following the above experiments, we compared the proposed network with the traditional pipeline, in which MRI data are first converted into images via IFFT and then fed into image-based machine learning models. The image-based network significantly outperformed our network, with a mean Dice score of 0.807 and an mIoU of 0.764. This indicates that the information in the frequency domain is still difficult to be extracted and utilized by the deep learning framework, especially in scenarios requiring fine-grained segmentation, albeit we have verified its feasibility. 
+
+However, by fusing the image-domain features and frequency-domain features as input, the network reached the best performance, suggesting that frequency-domain features are able to provide complementary information and thereby improve the overall performance. Such complementarity may stem from the fact that while IFFT is theoretically reversible, certain information such as phase information may be lost in practice. Case B and C in Figure 7 clearly show the positive effect of the information extracted by our network on the image model.
+
+
+\subsection{Undersampled K-space: Interpretation and Implications}
+
+In addition, we further investigated the performance of the proposed model on aggressively undersampled K-space. In practical medical imaging pipelines, undersampling of K-space is often employed to accelerate scanning. Inevitably, it will lead to information loss, thereby affect the reconstruction quality. To examine the performance of the proposed architecture under this practical constraint, we evaluated it on K-space data with different acceleration ratios. At lower undersampling rates, the image model still outperformed the K-space model. However, under aggressive undersampling, the structural integrity of the IFFT-reconstructed images was severely obliterated, making it difficult for the image model to perform effectively. 
+
+In this case, the accuracy of all models decreased compared to the fully sampled counterparts. In contrast, the performance degradation of the proposed network is relatively small, which indicates that it still retains usable segmentation capability. As also illustrated in Figure 8, the proposed model is better at predicting the relative positions of the cardiac cavities and myocardium, while the image-based model is more susceptible to errors introduced in the reconstructed image. Severe undersampling leads to irreversible detail loss in the IFFT reconstruction, destroying the spatial details that the image-domain method relies on, but the mothod using K-space directly avoids this process. Benefiting from this property, our proposed architecture demonstrated greater robustness in the situations where K-space is severely undersampled, highlighting the potential for enabling accelerated MRI acquisition. 
+
+Moreover, the network using hybrid input continued to outperform either single-input model, consistent with the synergistic effect between frequency-domain and spatial-domain features observed in the fully sampled scenario.
+
+
+
+
+
+
+
+Add details and refactor
+
+Methodology:
+
+We first assessed the feasibility of the proposed network, then evaluated its performance and compared different input schemes. Finally, we explored its application potential on undersampled data. This section will introduce the datasets, architecture details, and training strategy.
+
+
+Data preprocessing:
+
+ADD: Moreover, because each case contains multiple frames, we split the dataset at the case level using the case ID to prevent data leakage. This will guarantee that the training set and the validation set do not contain similar data, preventing the data leakage.
+
+
+Investigate if the K-space, which is difficult for humans to understand, can provide meaningful features through machine learning methods.
+--> 
+Investigate if the K-space, which is difficult for humans to understand, can provide diagnostically relevant features through deep learning models such as CNN or RNN encoders.
+
+
+Abstract:
+indicating that frequency-domain representations contain semantically meaningful and spatially coherent information that can be extracted by deep learning network.
+-->
+indicating that frequency-domain representations contain diagnostically relevant features that can be extracted by proposed deep learning network.
+
+
+-->
+Each sampling point in K-space encodes spatial frequency and phase information rather than direct image intensities that collectively determines the final image structure
+
+
+
+ADD:
+
+Moreover, we calculated the Cohen's_dz, which quantifies the magnitude of the average improvement relative to inter-patient variability to show the statistical significance of the performance difference beteween the K-space model and image model.
+
+(Cohen's $d_{\mathrm{z}}$ is 1.34)
+
+
+fused with image features using channel-wise gating and pixel attention
+
+These observations are clinically significant, which might help to shorten MRI scan time by motivating a re-examination of severely undersampled K-space data instead of dismissing it simply because reconstructing meaningful images is difficult.
+
+
+improve patient experience
+
+enhance workflow efficiency for clinicians
+
+We applied singular value decomposition (SVD) based coil compression method, which factorizes the coil dimension into orthogonal components, and retained four virtual coils.
+
+which represents fully sampled low-frequency k-space lines at the center
+
+In Cartesian undersampling, the retained lines were randomly selected according to a variable-density probability distribution outside the ACS region, resulting in denser sampling in the central region and sparser sampling in the peripheral high-frequency region
+
